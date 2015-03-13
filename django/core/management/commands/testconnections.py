@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
+import socket
 import smtplib
 
 from django.core.management.base import BaseCommand
@@ -38,8 +39,12 @@ class Command(BaseCommand):
                 connection.open()
                 if self.verbosity > 1:
                     self.stdout.write("Mail SMTP settings OK!\n")
+            except socket.error as e:
+                self.stdout.write("Mail STMP settings are wrong.\n")
+                if self.verbosity >= 2:
+                    print e
             except smtplib.SMTPAuthenticationError as e:
-                self.stdout.write("Mail credentials are wrong.\n")
+                self.stdout.write("Mail STMP credentials are wrong.\n")
                 if self.verbosity >= 2:
                     print e
 
